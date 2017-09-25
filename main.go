@@ -19,6 +19,9 @@ type configuration struct {
 	MaxMessageSize int    `envconfig:"MAX_RECV_MSG_SIZE" required:"true" default:"16500545"`
 	CertFile       string `envconfig:"CERT_FILE" required:"true"`
 	KeyFile        string `envconfig:"KEY_FILE" required:"true"`
+	WorkingDir     string `envconfig:"WORKING_DIR" default:"/tmp" required:"true"`
+	FileExtension  string `envconfig:"FILE_EXTENSION" default:".nhite" required:"false"`
+	PermMode       uint32 `envconfig:"PERM_MODE" default:"0600" required:"true"`
 }
 
 const envPrefix = "N_LOCAL_BACKEND"
@@ -66,6 +69,10 @@ func main() {
 	}
 	server := grpc.NewServer(grpc.Creds(creds), grpc.MaxRecvMsgSize(config.MaxMessageSize))
 
-	pb.RegisterBackendServer(server, &backend{})
+	pb.RegisterBackendServer(server, &backend{
+		workingDir:    config.WorkingDir,
+		fileExtension: config.FileExtension,
+		permission:    os.FileMode(config.PermMode),
+	})
 	log.Fatal(server.Serve(listener))
 }
