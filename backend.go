@@ -6,6 +6,7 @@ import (
 	"encoding/gob"
 	"io"
 	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 
@@ -19,8 +20,14 @@ type backend struct {
 }
 
 func (b *backend) Store(stream pb.Backend_StoreServer) error {
+	if debug {
+		log.Println("[store] =>")
+	}
 	body, err := stream.Recv()
 	if err == io.EOF || err == nil {
+		if debug {
+			log.Printf("[store] ==> received flow with ID %v", body.GetID().GetID())
+		}
 
 		// By now let's use a gobencoding for flexibility
 		var content bytes.Buffer
@@ -34,6 +41,9 @@ func (b *backend) Store(stream pb.Backend_StoreServer) error {
 		err := ioutil.WriteFile(filepath.Join(b.workingDir, body.GetID().GetID()+b.fileExtension), content.Bytes(), b.permission)
 		if err != nil {
 			return err
+		}
+		if debug {
+			log.Printf("[store] ==> content written in ", filepath.Join(b.workingDir, body.GetID().GetID()+b.fileExtension))
 		}
 	}
 	if err != nil {

@@ -33,9 +33,11 @@ var (
 	// Version number
 	Version     string
 	versionFlag bool
+	debug       bool
 )
 
 func main() {
+	flag.BoolVar(&debug, "d", false, "debug mode")
 	flag.BoolVar(&versionFlag, "v", false, "Display version then exit")
 	flag.Parse()
 	if versionFlag {
