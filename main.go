@@ -15,7 +15,7 @@ import (
 )
 
 type configuration struct {
-	ListenAddress  string `envconfig:"LISTEN_ADDRESS" required:"true" default:"127.0.0.1:1234"`
+	ListenAddress  string `envconfig:"LISTEN_ADDRESS" required:"true" default:"127.0.0.1:4567"`
 	MaxMessageSize int    `envconfig:"MAX_RECV_MSG_SIZE" required:"true" default:"16500545"`
 	CertFile       string `envconfig:"CERT_FILE" required:"true"`
 	KeyFile        string `envconfig:"KEY_FILE" required:"true"`
