@@ -47,7 +47,7 @@ func main() {
 		fmt.Printf("%v version %v, build %v\n", os.Args[0], Version, Build)
 		os.Exit(0)
 	}
-	if len(os.Args) > 1 {
+	if len(flag.Args()) > 1 {
 		envconfig.Usage(envPrefix, &config)
 		os.Exit(1)
 

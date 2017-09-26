@@ -43,7 +43,7 @@ func (b *backend) Store(stream pb.Backend_StoreServer) error {
 			return err
 		}
 		if debug {
-			log.Printf("[store] ==> content written in ", filepath.Join(b.workingDir, body.GetID().GetID()+b.fileExtension))
+			log.Printf("[store] ==> content written in %v", filepath.Join(b.workingDir, body.GetID().GetID()+b.fileExtension))
 		}
 	}
 	if err != nil {
